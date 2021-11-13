@@ -1,64 +1,85 @@
-let strokeColor1; 
-let fillColor1;
+var ticker = 0;
 
-let cellStartX;
-let cellStartY;
-let cellEndX;
-let cellEndY;
-let incrementX1;
-let incrementY1;
-let incrementX2;
-let incrementY2;
-let boxSize;
+var strokeColor1; 
+var fillColor1;
+var fillColor2;
+
+var cellStartX;
+var cellStartY;
+
+var boxSize = 20;
+
 
 function setup() {
   // createCanvas(400, 400);
   let renderer = createCanvas(400, 400);
   renderer.parent("canvas");
 
-  cellStartX = 0;
-  cellStartY = 0;
-  incrementX1 = 0;
-  incrementY1 = 0;
-  incrementX2 = 0;
-  incrementY2 = 0;
-  boxSize = 20;
-  cellEndX = boxSize;
-  cellEndY = boxSize;
+  frameRate(24);
 
 }
 
 function draw() {
 
-   let bgColor  = color(150, 250, 50);
+  ticker++;
+  var time = ticker/0.2;
+
+  cellStartX = 0;
+  cellStartY = 0;
+
+   let bgColor  = color(50, 250, 250);
    background(bgColor);
-
-   strokeColor1 = color(250, 100, 250);
-   fillColor1 = color(bgColor);
    
-   fill(20, 20, 20);
-   circle(0, 0, 100);
+   strokeColor1 = color(0);
+   fillColor1 = color(50, 50, 50);
 
-   cell(cellStartX, cellStartY, boxSize);
-   cell(cellStartX + boxSize, cellStartY, boxSize);
-   cell(cellStartX + boxSize*2, cellStartY, boxSize);
-   cell(cellStartX, cellStartY + boxSize, boxSize);
-  //  cell(cellStartX, cellStartY + boxSize, cellEndX, cellEndY);
+   var red = 250;
+   var green = 250;
+   var blue = 250;
+    var redMod = 100;
+    var greenMod = 12;
+    var blueMod = 0;
+
+   var amp = 100;
+   var freq = 1;
+   var a = 0;
+   var inc = 0; 
+   a+=time;
+  //  a+=time/1;
+
+  //  print (a);
+   
+
+   for (i = 0; i <= width; i+=1.19) {
+      
+      var boxIncX = boxSize * i;
+
+      var sine = amp * sin((a + inc)/freq);
+
+      fillColor2 = color(red + sine/redMod, green + sine/greenMod, blue + sine/blueMod);
+
+      inc++;
+      
+      // print(sine);
+
+      for (j = 0; j <= height; j++){  
+        var boxIncY = boxSize * j;
+
+        cell(cellStartX + boxIncX, cellStartY + boxIncY, boxSize);
 
 
-    // for (let i = 0; i<=10; i++) {
+      }
+   }
 
-    //   for (let j = 0; j <= width; j+=boxSize) {
-    //     cell(cellStartX + incrementX1, cellStartY + incrementY1, cellEndX + incrementX2, cellEndY + incrementY2);
-    //     incrementX1 += 0;
-    //     print(incrementX1);
-    //   }
-    // }
+  //  cell(cellStartX + i, cellStartY, boxSize);
+  //  cell(cellStartX + boxSize*2, cellStartY, boxSize);
+  //  cell(cellStartX, cellStartY + boxSize, boxSize);
+
 }
 
 
 function cell(x1, y1, s){
   stroke(strokeColor1);
-  fill(fillColor1);
+  fill(fillColor2);
   rect(x1, y1, s, s);
 }
