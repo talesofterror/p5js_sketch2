@@ -7,7 +7,11 @@ var fillColor2;
 var cellStartX;
 var cellStartY;
 
-var boxSize = 20;
+let red = 250;
+let green = 250;
+let blue = 250;
+
+var boxSize = 5;
 
 
 function setup() {
@@ -22,64 +26,79 @@ function setup() {
 function draw() {
 
   ticker++;
-  var time = ticker/0.2;
+  var time = ticker/0.1;
 
   cellStartX = 0;
   cellStartY = 0;
 
-   let bgColor  = color(50, 250, 250);
+   let bgColor  = color(150, 150, 50);
    background(bgColor);
    
-   strokeColor1 = color(0);
+   strokeColor1 = color(150, 150, 0, 0);
    fillColor1 = color(50, 50, 50);
 
-   var red = 250;
-   var green = 250;
-   var blue = 250;
-    var redMod = 100;
-    var greenMod = 12;
-    var blueMod = 0;
+   var redMod = 250;
+   var greenMod = 250;
+   var blueMod = 150;
 
-   var amp = 100;
+   var amp = 250;
    var freq = 1;
-   var a = 0;
-   var inc = 0; 
-   a+=time;
-  //  a+=time/1;
+   var inc = 0;
+   var phase = 0; 
+   var vertShift = -250;
 
-  //  print (a);
-   
+   inc+=time/50;
 
-   for (i = 0; i <= width; i+=1.19) {
+   print(inc);
+
+   drawGrid(0, 0, 100, 100, inc);
+   drawGrid(20, 20, 70, 70, -inc*2);
+   drawGrid(40, 40, 60, 60, inc);
+   drawGrid(60, 60, 50, 50, -inc*2);
+   drawGrid(80, 80, 40, 40, inc);
+   drawGrid(0, 150, 100, 10, inc-0.5);
+
+
+  function drawGrid(startX = 0, startY = 0, sizeX = 10, sizeY = 10, pOffset = 0) {
+    
+    for (i = 0; i <= sizeX; i += 1) {
       
       var boxIncX = boxSize * i;
+      var sine = sineFunc(amp, inc, phase + pOffset, freq, vertShift);
 
-      var sine = amp * sin((a + inc)/freq);
-
-      fillColor2 = color(red + sine/redMod, green + sine/greenMod, blue + sine/blueMod);
-
-      inc++;
+      fillColor2 = color(red + sine + redMod, green + sine + greenMod, blue + sine + blueMod);
       
-      // print(sine);
+      phase++;
+      for (j = 0; j <= sizeY; j += 1) {
 
-      for (j = 0; j <= height; j++){  
         var boxIncY = boxSize * j;
-
-        cell(cellStartX + boxIncX, cellStartY + boxIncY, boxSize);
+        cell((cellStartX+startX) + boxIncX, (cellStartY+startY) + boxIncY, boxSize);
 
 
       }
-   }
+    }
+  }
 
-  //  cell(cellStartX + i, cellStartY, boxSize);
-  //  cell(cellStartX + boxSize*2, cellStartY, boxSize);
-  //  cell(cellStartX, cellStartY + boxSize, boxSize);
+  //  print("a = " + a + ", inc = " + inc);
 
 }
 
+
+function sineFunc(amp, a, phase, freq, vertShift) {
+  return (amp * sin(((a) + phase) / (freq)) + vertShift);
+}
 
 function cell(x1, y1, s){
   stroke(strokeColor1);
   fill(fillColor2);
   rect(x1, y1, s, s);
+}
+
+
+function mousePressed() {
+  noLoop();
+}
+
+function mouseReleased() {
+  loop();
 }
