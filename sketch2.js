@@ -12,8 +12,8 @@ var boxSize = 10;
 
 function setup() {
   // createCanvas(400, 400);
-  let renderer = createCanvas(400, 400);
-  renderer.parent("canvas");
+  let renderer1 = createCanvas(50, 300);
+  renderer1.parent("sideCanvas1");
 
   frameRate(24);
 
@@ -85,3 +85,4 @@ function mousePressed() {
 function mouseReleased() {
   loop();
 }
+

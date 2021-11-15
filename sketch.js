@@ -36,6 +36,7 @@ function draw() {
    
    strokeColor1 = color(150, 150, 0, 0);
    fillColor1 = color(50, 50, 50);
+   fillColor2 = color(250, 250, 150);
 
    var redMod = 250;
    var greenMod = 250;
@@ -61,7 +62,7 @@ function draw() {
 
   function drawGrid(startX = 0, startY = 0, sizeX = 10, sizeY = 10, pOffset = 0) {
     
-    for (i = 0; i <= sizeX; i += 1) {
+    for (i = 0; i <= sizeX; i += 1.19) {
       
       var boxIncX = boxSize * i;
       var sine = sineFunc(amp, inc, phase + pOffset, freq, vertShift);
@@ -69,7 +70,7 @@ function draw() {
       fillColor2 = color(red + sine + redMod, green + sine + greenMod, blue + sine + blueMod);
       
       phase++;
-      for (j = 0; j <= sizeY; j += 1) {
+      for (j = 0; j <= sizeY; j += 1.19) {
 
         var boxIncY = boxSize * j;
         cell((cellStartX+startX) + boxIncX, (cellStartY+startY) + boxIncY, boxSize);
@@ -102,3 +103,80 @@ function mousePressed() {
 function mouseReleased() {
   loop();
 }
+
+
+
+/* 
+
+I can put new sketches within separate divs by using "instance mode". It would involve
+ using those mysterious arrow functions. The code is below: 
+
+//
+// save this file as sketch.js
+// 
+var s = function( p ) { // p could be any variable name
+  var x = 100; 
+  var y = 100;
+  p.setup = function() {
+    p.createCanvas(400, 200);
+  };
+
+  p.draw = function() {
+    p.background(0);
+    p.fill(255);
+    p.rect(x,y,50,50);
+  };
+};
+var myp5 = new p5(s, 'c1');
+
+// Sketch Two
+var t = function( p ) { 
+  var x = 100.0; 
+  var y = 100; 
+  var speed = 2.5; 
+  p.setup = function() {
+    p.createCanvas(400, 200);
+  };
+
+  p.draw = function() {
+    p.background(100);
+    p.fill(1);
+    x += speed; 
+    if(x > p.width){
+      x = 0; 
+    }
+    p.ellipse(x,y,50,50);
+
+  };
+};
+var myp5 = new p5(t, 'c2');
+
+
+//
+// the HTML works out as follows: 
+//
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+	<!-- uncomment lines below to include extra p5 libraries -->
+	<!-- 	<script language="javascript" src="libraries/p5.dom.js"></script> -->
+	<!--<script language="javascript" src="libraries/p5.sound.js"></script>-->
+	<script language="javascript" type="text/javascript" src="sketch.js"></script>
+	<!-- this line removes any default padding and style. you might only need one of these values set. -->
+	<style> body {padding: 0; 
+		margin: 0;
+	} 
+</style>
+</head>
+<body>
+	<div id="c1"></div> <br>
+	<div id="c2"></div>
+</body>
+</html>
+
+
+// source: http://joemckaystudio.com/multisketches/
+
+*/
